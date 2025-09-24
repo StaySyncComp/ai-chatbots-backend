@@ -1,0 +1,26 @@
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+# Install system deps, install requirements, then clean up
+COPY requirements.txt .
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential curl \
+    && pip install --no-cache-dir -r requirements.txt \
+    && apt-get purge -y build-essential \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY . .
+
+EXPOSE 5000
+
+# Optional security: create non-root user
+RUN adduser --disabled-password --gecos '' appuser
+USER appuser
+
+HEALTHCHECK CMD curl --fail http://localhost:5000/ || exit 1
+
+CMD ["gunicorn", "main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:5000"]
