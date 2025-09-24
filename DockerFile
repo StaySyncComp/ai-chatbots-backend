@@ -5,7 +5,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Install system deps, install requirements, then clean up
+# sInstall system deps, install requirements, then clean up
 COPY requirements.txt .
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential curl \
     && pip install --no-cache-dir -r requirements.txt \
