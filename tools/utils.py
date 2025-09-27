@@ -6,6 +6,7 @@ from fastapi import Request
 
 async def save_request_context(request: Request, payload=None):
     headers = dict(request.headers)
+    print("headers", headers)
     headers_to_remove = [
         "host",
         "content-length",

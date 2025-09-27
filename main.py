@@ -19,12 +19,12 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://bloom.staysync.co.il",
+        "http://localhost:3101",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 
 from pydantic import BaseModel, Field, Extra
